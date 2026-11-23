@@ -1414,7 +1414,7 @@ const fmtData = s => { if (!s) return '-'; const iso = s.length === 10 ? s + 'T1
 const brl = n => Number(n).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 const mascCnpj = v => { v = v.replace(/\D/g, '').slice(0, 14); return v.replace(/^(\d{2})(\d)/, '$1.$2').replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3').replace(/\.(\d{3})(\d)/, '.$1/$2').replace(/(\d{4})(\d)/, '$1-$2'); };
 const mascCep = v => v.replace(/\D/g, '').slice(0, 8).replace(/^(\d{5})(\d)/, '$1-$2');
-const iniciais = n => n.split(/\s+/).filter(Boolean).slice(0, 2).map(p => p[0]).join('').toUpperCase();
+const iniciais = n => String(n || 'KN').split(/\s+/).filter(Boolean).slice(0, 2).map(p => p[0]).join('').toUpperCase();
 const hojeISO = () => new Date(Date.now() - new Date().getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
 const statusPillKey = {
   operando: ['amber', 'st_produzindo'], disponivel: ['blue', 'st_disponivel'],
@@ -1663,7 +1663,7 @@ async function abrirNotificacoes(e) {
   if (ME.nao_lidas) { await api('/notificacoes/lidas', { method: 'POST' }); ME.nao_lidas = 0; $('#bell .dot')?.remove(); }
 }
 
-aplicarPreferenciasGlobais(JSON.parse(localStorage.getItem(PREFS_KEY) || '{}'));
+aplicarPreferenciasGlobais(getPrefs());
 
 /* ---------- telas de espera ---------- */
 function pubFrame(inner) {
